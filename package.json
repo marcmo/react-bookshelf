@@ -16,10 +16,14 @@
     "test": "react-scripts test --env=jsdom",
     "flow": "flow",
     "lint": "eslint src",
+    "eslint-check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-prettier": "^2.1.2",
+    "eslint-plugin-react": "^7.1.0",
     "prettier": "^1.5.3",
     "prettier-eslint": "^6.4.2"
   }

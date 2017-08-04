@@ -1,22 +1,36 @@
 {
-  "plugins": [
-    "prettier"
-  ],
-  "parser": "babel-eslint",
-  "rules": {
-    "quotes": [1, "single"],
-    "prettier/prettier": ["warn", {"singleQuote": true, "parser": "flow"}],
-    "strict": 0,
-    "new-cap": [2, { "capIsNewExceptions": ["List", "Map", "Set"] }]
-  },
   "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react"
+  ],
+  "plugins": [
+    "flowtype",
+    "react",
     "prettier"
   ],
+  "parserOptions": {
+    "ecmaVersion": 2016,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "env": {
-    "browser": true,
-    "node": true
+    "es6": true,
+    "node": true,
+    "jest": true,
+    "browser": true
   },
   "rules": {
+    "prettier/prettier": ["warn", {"singleQuote": true, "parser": "flow"}],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/prefer-stateless-function": [1, { "ignorePureComponents": true }],
+    "no-use-before-define": ["error", { "functions": true, "classes": true }],
+    "no-param-reassign": ["warn", { "props": true }],
     "quotes": [1, "single"]
   }
 }
