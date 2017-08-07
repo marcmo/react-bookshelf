@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Route } from 'react-router-dom';
 import ListBooks from './ListBooks';
 import SearchBooks from './SearchBooks';
 import type { Book } from './BookShelf';
@@ -66,24 +67,27 @@ class BooksApp extends React.Component {
           'http://books.google.com/books/content?id=32haAAAAMAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72yckZ5f5bDFVIf7BGPbjA0KYYtlQ__nWB-hI_YZmZ-fScYwFy4O_fWOcPwf-pgv3pPQNJP_sT5J_xOUciD8WaKmevh1rUR-1jk7g1aCD_KeJaOpjVu0cm_11BBIUXdxbFkVMdi&source=gbs_api',
         shelf: 'Read'
       }
-    ],
-    showSearchPage: true
-  };
-
-  disableSearch = () => {
-    this.setState({ showSearchPage: false });
+    ]
   };
 
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage
-          ? <div className="search-books">
-              <SearchBooks onDisableSearch={this.disableSearch} />
-            </div>
-          : <div className="list-books">
+        <Route
+          exact
+          path="/"
+          render={() =>
+            <div className="search-books">
+              <SearchBooks />
+            </div>}
+        />
+        <Route
+          path="/library"
+          render={() =>
+            <div className="list-books">
               <ListBooks books={this.state.books} />
             </div>}
+        />
       </div>
     );
   }

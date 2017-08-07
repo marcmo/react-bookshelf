@@ -1,22 +1,20 @@
 // @flow
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class SearchBooks extends Component {
-  props: {
-    onDisableSearch: () => void
-  };
   render() {
     return (
       <div>
         <div className="search-books-bar">
-          <a
+          <Link
+            to="/library"
             className="close-search"
             role="link"
             tabIndex={0}
-            onClick={() => this.props.onDisableSearch()}
           >
             Close
-          </a>
+          </Link>
           <div className="search-books-input-wrapper">
             {/*
                     NOTES: The search from BooksAPI is limited to a particular set of search terms.
