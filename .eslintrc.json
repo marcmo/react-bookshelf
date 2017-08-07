@@ -31,6 +31,6 @@
     "react/prefer-stateless-function": [1, { "ignorePureComponents": true }],
     "no-use-before-define": ["error", { "functions": true, "classes": true }],
     "no-param-reassign": ["warn", { "props": true }],
-    "quotes": [1, "single"]
+    "quotes": ["warn", "single", {"allowTemplateLiterals": true}]
   }
 }

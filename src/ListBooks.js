@@ -33,15 +33,15 @@ class ListBooks extends Component {
         <div className="list-books-content">
           <div>
             <BookShelf
-              books={filteredBooks.filter(b => b.shelf === 'Reading')}
+              books={filteredBooks.filter((b: Book) => b.shelf === 'Reading')}
               list="Reading"
             />
             <BookShelf
-              books={filteredBooks.filter(b => b.shelf === 'Want')}
+              books={filteredBooks.filter((b: Book) => b.shelf === 'Want')}
               list="Want"
             />
             <BookShelf
-              books={filteredBooks.filter(b => b.shelf === 'Read')}
+              books={filteredBooks.filter((b: Book) => b.shelf === 'Read')}
               list="Read"
             />
           </div>
