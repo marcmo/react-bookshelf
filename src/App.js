@@ -14,8 +14,7 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
   state: {
-    books: Array<Book>,
-    showSearchPage: boolean
+    books: Array<Book>
   } = {
     books: [
       {
@@ -73,14 +72,7 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route
-          exact
-          path="/"
-          render={() =>
-            <div className="search-books">
-              <SearchBooks />
-            </div>}
-        />
+        <Route exact path="/search" render={() => <SearchBooks />} />
         <Route
           path="/library"
           render={() =>
