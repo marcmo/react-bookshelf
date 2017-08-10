@@ -1,10 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import escapeStringRegexp from 'escape-string-regexp';
 import sortBy from 'sort-by';
 import BookShelf from './BookShelf';
-import type { Book } from './BookShelf';
+import type { Book, Shelf } from './BookShelf';
 
 class ListBooks extends Component {
   state = {
@@ -17,7 +16,7 @@ class ListBooks extends Component {
   render() {
     const { books } = this.props;
     const { query } = this.state;
-    let filteredBooks;
+    let filteredBooks: Array<Book>;
     if (query) {
       const escaped = escapeStringRegexp(query);
       const m = new RegExp(escaped, 'i');
@@ -35,15 +34,15 @@ class ListBooks extends Component {
         <div className="list-books-content">
           <div>
             <BookShelf
-              books={filteredBooks.filter((b: Book) => b.shelf === 'Reading')}
+              books={filteredBooks.filter(b => b.shelf === ('Reading': Shelf))}
               list="Reading"
             />
             <BookShelf
-              books={filteredBooks.filter((b: Book) => b.shelf === 'Want')}
+              books={filteredBooks.filter(b => b.shelf === ('Want': Shelf))}
               list="Want"
             />
             <BookShelf
-              books={filteredBooks.filter((b: Book) => b.shelf === 'Read')}
+              books={filteredBooks.filter(b => b.shelf === ('Read': Shelf))}
               list="Read"
             />
           </div>

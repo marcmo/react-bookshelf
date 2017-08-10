@@ -1,10 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 
-export type Shelf = 'Reading' | 'Read' | 'Want';
+export type Shelf = 'Reading' | 'Read' | 'Want' | 'None';
 export type Book = {
   title: string,
-  authors: string,
+  authors: [string],
   image: string,
   shelf: Shelf
 };

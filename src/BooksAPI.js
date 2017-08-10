@@ -1,10 +1,13 @@
+// @flow
+import type { Book } from './BookShelf';
+
 const api = 'https://reactnd-books-api.udacity.com';
 
 // Generate a unique token for storing your bookshelf data on the backend server.
-let token = localStorage.token;
+let token = window.localStorage.token;
 if (!token) {
   token = Math.random().toString(36).substr(-8);
-  localStorage.token = token;
+  window.localStorage.token = token;
 }
 
 const headers = {
@@ -12,7 +15,7 @@ const headers = {
   Authorization: token
 };
 
-export const get = bookId =>
+export const get = (bookId: any) =>
   fetch(`${api}/books/${bookId}`, { headers })
     .then(res => res.json())
     .then(data => data.book);
@@ -22,7 +25,7 @@ export const getAll = () =>
     .then(res => res.json())
     .then(data => data.books);
 
-export const update = (book, shelf) =>
+export const update = (book: any, shelf: any) =>
   fetch(`${api}/books/${book.id}`, {
     method: 'PUT',
     headers: {
@@ -32,7 +35,29 @@ export const update = (book, shelf) =>
     body: JSON.stringify({ shelf })
   }).then(res => res.json());
 
-export const search = (query, maxResults) =>
+function toBook(b: any): ?Book {
+  if (
+    !b ||
+    !b.title ||
+    !b.authors ||
+    !b.imageLinks ||
+    !b.imageLinks.thumbnail
+  ) {
+    console.log(`could not parse book ${b}`);
+    return null;
+  }
+  return {
+    title: b.title,
+    authors: b.authors,
+    image: b.imageLinks.thumbnail,
+    shelf: 'None'
+  };
+}
+
+export const searchOnline = (
+  query: string,
+  maxResults?: number = 100
+): Promise<Array<Book>> =>
   fetch(`${api}/search`, {
     method: 'POST',
     headers: {
@@ -42,4 +67,6 @@ export const search = (query, maxResults) =>
     body: JSON.stringify({ query, maxResults })
   })
     .then(res => res.json())
-    .then(data => data.books);
+    .then(
+      data => (data.books.error ? new Array(0) : data.books.map(b => toBook(b)))
+    );
