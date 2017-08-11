@@ -6,10 +6,38 @@ export type Book = {
   title: string,
   authors: [string],
   image: string,
+  id: string,
   shelf: Shelf
 };
 
-function shelfName(name: Shelf): string {
+export const parseShelf = (s: string): Shelf => {
+  switch (s) {
+    case 'currentlyReading':
+      return 'Reading';
+    case 'read':
+      return 'Read';
+    case 'wantToRead':
+      return 'Want';
+    default:
+      return 'None';
+  }
+};
+export const serializeShelf = (s: Shelf): string => {
+  switch (s) {
+    case 'Reading':
+      return 'currentlyReading';
+    case 'Read':
+      return 'read';
+    case 'Want':
+      return 'wantToRead';
+    case 'None':
+      return 'none';
+    default:
+      return 'none';
+  }
+};
+
+const shelfName = (name: Shelf): string => {
   switch (name) {
     case 'Reading':
       return 'Currently Reading';
@@ -20,12 +48,14 @@ function shelfName(name: Shelf): string {
     default:
       return '';
   }
-}
+};
 class BookShelf extends Component {
   props: {
     books: Array<Book>,
-    list: Shelf
+    list: Shelf,
+    onMarkBook: (Event, Book) => void
   };
+
   render() {
     const { books, list } = this.props;
     return (
@@ -36,7 +66,7 @@ class BookShelf extends Component {
         <div className="bookshelf-books">
           <ol className="books-grid">
             {books.map(book =>
-              <li key={book.title} className="book-list-item">
+              <li key={book.id} className="book-list-item">
                 <div className="book">
                   <div className="book-top">
                     <div
@@ -48,7 +78,10 @@ class BookShelf extends Component {
                       }}
                     />
                     <div className="book-shelf-changer">
-                      <select>
+                      <select
+                        value={serializeShelf(book.shelf)}
+                        onChange={event => this.props.onMarkBook(event, book)}
+                      >
                         <option value="none" disabled>
                           Move to...
                         </option>

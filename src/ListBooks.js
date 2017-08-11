@@ -10,7 +10,8 @@ class ListBooks extends Component {
     query: ''
   };
   props: {
-    books: Array<Book>
+    books: Array<Book>,
+    onMarkBook: (Event, Book) => void
   };
 
   render() {
@@ -36,14 +37,17 @@ class ListBooks extends Component {
             <BookShelf
               books={filteredBooks.filter(b => b.shelf === ('Reading': Shelf))}
               list="Reading"
+              onMarkBook={this.props.onMarkBook}
             />
             <BookShelf
               books={filteredBooks.filter(b => b.shelf === ('Want': Shelf))}
               list="Want"
+              onMarkBook={this.props.onMarkBook}
             />
             <BookShelf
               books={filteredBooks.filter(b => b.shelf === ('Read': Shelf))}
               list="Read"
+              onMarkBook={this.props.onMarkBook}
             />
           </div>
         </div>

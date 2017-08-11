@@ -1,5 +1,6 @@
 // @flow
 import type { Book } from './BookShelf';
+import { parseShelf } from './BookShelf';
 
 const api = 'https://reactnd-books-api.udacity.com';
 
@@ -15,31 +16,12 @@ const headers = {
   Authorization: token
 };
 
-export const get = (bookId: any) =>
-  fetch(`${api}/books/${bookId}`, { headers })
-    .then(res => res.json())
-    .then(data => data.book);
-
-export const getAll = () =>
-  fetch(`${api}/books`, { headers })
-    .then(res => res.json())
-    .then(data => data.books);
-
-export const update = (book: any, shelf: any) =>
-  fetch(`${api}/books/${book.id}`, {
-    method: 'PUT',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ shelf })
-  }).then(res => res.json());
-
-function toBook(b: any): ?Book {
+const toBook = (b: any): ?Book => {
   if (
     !b ||
     !b.title ||
     !b.authors ||
+    !b.id ||
     !b.imageLinks ||
     !b.imageLinks.thumbnail
   ) {
@@ -50,9 +32,32 @@ function toBook(b: any): ?Book {
     title: b.title,
     authors: b.authors,
     image: b.imageLinks.thumbnail,
-    shelf: 'None'
+    id: b.id,
+    shelf: parseShelf(b.shelf)
   };
-}
+};
+
+export const get = (bookId: string): Promise<?Book> =>
+  fetch(`${api}/books/${bookId}`, { headers })
+    .then(res => res.json())
+    .then(data => toBook(data.book));
+
+export const getAll = (): Promise<Array<Book>> =>
+  fetch(`${api}/books`, { headers })
+    .then(res => res.json())
+    .then(
+      data => (data.books.error ? new Array(0) : data.books.map(b => toBook(b)))
+    );
+
+export const update = (book: any, shelf: any) =>
+  fetch(`${api}/books/${book.id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ shelf })
+  }).then(res => res.json());
 
 export const searchOnline = (
   query: string,

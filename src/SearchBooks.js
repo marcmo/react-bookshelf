@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import type { Book } from './BookShelf';
+import { serializeShelf } from './BookShelf';
 import { searchOnline } from './BooksAPI';
 
 class SearchBooks extends Component {
@@ -16,12 +17,12 @@ class SearchBooks extends Component {
     query: string,
     results: Array<Book>
   };
+  props: {
+    onMarkBook: (Event, Book) => void
+  };
 
   updateQuery = (query: string) => {
     searchOnline(query.trim()).then(res => {
-      if (res.length === 0) {
-        console.log(`no books found for "${query}"`);
-      }
       console.log(res);
       this.setState({ query: query.trim(), results: res.filter(b => b) });
     });
@@ -52,10 +53,7 @@ class SearchBooks extends Component {
         <div className="search-books-results">
           <ol className="books-grid">
             {this.state.results.map(book =>
-              <li
-                key={book.title + book.authors.join()}
-                className="book-list-item"
-              >
+              <li key={book.id} className="book-list-item">
                 <div className="book">
                   <div className="book-top">
                     <div
@@ -67,7 +65,10 @@ class SearchBooks extends Component {
                       }}
                     />
                     <div className="book-shelf-changer">
-                      <select>
+                      <select
+                        value={serializeShelf(book.shelf)}
+                        onChange={event => this.props.onMarkBook(event, book)}
+                      >
                         <option value="none" disabled>
                           Move to...
                         </option>
