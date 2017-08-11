@@ -49,7 +49,7 @@ export const getAll = (): Promise<Array<Book>> =>
       data => (data.books.error ? new Array(0) : data.books.map(b => toBook(b)))
     );
 
-export const update = (book: any, shelf: any) =>
+export const update = (book: Book, shelf: string): Promise<JSON> =>
   fetch(`${api}/books/${book.id}`, {
     method: 'PUT',
     headers: {
