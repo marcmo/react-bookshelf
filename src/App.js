@@ -42,22 +42,24 @@ class BooksApp extends React.Component {
 
   render() {
     return (
-      <div className="app">
-        <Route
-          exact
-          path="/search"
-          render={() => <SearchBooks onMarkBook={this.assignBook} />}
-        />
-        <Route
-          path="/library"
-          render={() =>
-            <div className="list-books">
-              <ListBooks
-                books={this.state.books}
-                onMarkBook={this.assignBook}
-              />
-            </div>}
-        />
+      <div className="container-fluid">
+        <div className="app">
+          <Route
+            exact
+            path="/search"
+            render={() => <SearchBooks onMarkBook={this.assignBook} />}
+          />
+          <Route
+            path="/library"
+            render={() =>
+              <div className="list-books">
+                <ListBooks
+                  books={this.state.books}
+                  onMarkBook={this.assignBook}
+                />
+              </div>}
+          />
+        </div>
       </div>
     );
   }

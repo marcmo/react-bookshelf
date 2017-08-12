@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import escapeStringRegexp from 'escape-string-regexp';
 import sortBy from 'sort-by';
+import { Link } from 'react-router-dom';
 import BookShelf from './BookShelf';
 import type { Book, Shelf } from './BookShelf';
 
@@ -28,8 +29,15 @@ class ListBooks extends Component {
     filteredBooks.sort(sortBy('name'));
     return (
       <div className="list-books">
-        <div className="list-books-title">
-          <h1>MyReads</h1>
+        <div className="row bg-dark">
+          <div className="col-2">
+            <Link className="open-search" to="/search">
+              Search
+            </Link>
+          </div>
+          <div className="col-10 list-books-title">
+            <h1>MyReads</h1>
+          </div>
         </div>
 
         <div className="list-books-content">
