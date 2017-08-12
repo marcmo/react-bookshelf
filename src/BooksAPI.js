@@ -5,6 +5,7 @@ import { parseShelf } from './BookShelf';
 const api = 'https://reactnd-books-api.udacity.com';
 
 // Generate a unique token for storing your bookshelf data on the backend server.
+// xn2k7xo7
 let token = window.localStorage.token;
 if (!token) {
   token = Math.random().toString(36).substr(-8);

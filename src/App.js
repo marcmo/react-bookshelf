@@ -52,15 +52,6 @@ class BooksApp extends React.Component {
           path="/library"
           render={() =>
             <div className="list-books">
-              <div>
-                <button
-                  onClick={() => {
-                    getAll().then(r => console.log(r));
-                  }}
-                >
-                  checkBooks
-                </button>
-              </div>
               <ListBooks
                 books={this.state.books}
                 onMarkBook={this.assignBook}
