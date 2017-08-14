@@ -26,11 +26,9 @@ class BooksApp extends React.Component {
     event: Event & { currentTarget: window.HTMLInputElement },
     b: Book
   ): void => {
-    console.log(`assignBook: ${b.toString()}`);
     b.shelf = parseShelf(event.currentTarget.value);
-    update(b, serializeShelf(b.shelf)).then(res => {
-      console.log(res);
-      event.currentTarget.defaultValue = event.currentTarget.value;
+    event.currentTarget.defaultValue = b.shelf;
+    update(b, serializeShelf(b.shelf)).then(_ => {
       this.setState(state => ({
         books: state.books.filter(_b => _b.id !== b.id).concat([b])
       }));
