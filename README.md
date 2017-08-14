@@ -4,4 +4,20 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Usage
 
-just a quick `yarn install` followed by a `yarn run`
+### Install app with dependencies
+
+    yarn install
+
+### Run the dev server
+
+    yarn start
+
+### Development scripts
+
+running eslint
+
+    yarn lint
+
+running flow type checks:
+
+    yarn flow
