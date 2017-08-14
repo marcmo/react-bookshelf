@@ -9,15 +9,12 @@ import './App.css';
 import { getAll, update } from './BooksAPI';
 
 class BooksApp extends React.Component {
-  constructor(props: void) {
-    super(props);
-    this.state = {
-      books: []
-    };
-  }
   state: {
     books: Array<Book>
+  } = {
+    books: []
   };
+
   componentDidMount() {
     getAll().then(books => {
       console.log(books);
