@@ -39,7 +39,7 @@ class SearchBooks extends Component {
     return (
       <div>
         <div className="search-books-bar">
-          <Link to="/library" className="close-search" role="link" tabIndex={0}>
+          <Link to="/" className="close-search" role="link" tabIndex={0}>
             Close
           </Link>
           <div className="search-books-input-wrapper">

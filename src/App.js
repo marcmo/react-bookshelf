@@ -45,7 +45,7 @@ class BooksApp extends React.Component {
             render={() => <SearchBooks onMarkBook={this.assignBook} />}
           />
           <Route
-            path="/library"
+            path="/"
             render={() =>
               <div className="list-books">
                 <ListBooks
