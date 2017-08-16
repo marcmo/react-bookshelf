@@ -24,19 +24,25 @@ class SearchBooks extends Component {
   updateStatus = (book: Book): Book => this.props.books.get(book.id) || book;
 
   updateQuery = (query: string) => {
-    searchOnline(query.trim()).then(res => {
+    const trimmed: string = query.trim();
+    if (trimmed.length === 0) {
       this.setState({
-        query: query.trim(),
-        results: res.filter(b => b).map(this.updateStatus)
+        query: trimmed,
+        results: []
       });
-    });
+    } else {
+      searchOnline(trimmed).then(res => {
+        this.setState({
+          query: trimmed,
+          results: res.filter(b => b).map(this.updateStatus)
+        });
+      });
+    }
   };
   handleKeyDown = (e: any): void => {
     if (e.keyCode === 27) {
       this.setState({ query: '' });
       e.target.value = '';
-    } else if (e.keyCode === 13) {
-      this.updateQuery(e.target.value);
     }
   };
   render() {
@@ -50,6 +56,7 @@ class SearchBooks extends Component {
             <input
               type="text"
               placeholder="Search by title or author"
+              onChange={event => this.updateQuery(event.target.value)}
               onKeyDown={this.handleKeyDown}
             />
           </div>

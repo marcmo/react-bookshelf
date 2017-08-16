@@ -7,7 +7,7 @@ import type { Book, Shelf, BookMap } from './flowtypes';
 
 class ListBooks extends Component {
   filterByShelf = (s: Shelf): Array<Book> => {
-    console.log("filterByShelf");
+    console.log('filterByShelf');
     console.log(this.props.books);
     // const res = this.props.books.toArray().filter(
     const res = Array.from(this.props.books.values()).filter(

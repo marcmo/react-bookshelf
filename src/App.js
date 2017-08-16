@@ -51,6 +51,7 @@ class BooksApp extends React.Component {
               />}
           />
           <Route
+            exact
             path="/"
             render={() =>
               <div className="list-books">
