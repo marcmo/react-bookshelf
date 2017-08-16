@@ -13,7 +13,7 @@
     "prettier"
   ],
   "parserOptions": {
-    "ecmaVersion": 2016,
+    "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
@@ -31,7 +31,8 @@
     "react/prefer-stateless-function": [1, { "ignorePureComponents": true }],
     "no-use-before-define": ["error", { "functions": true, "classes": true }],
     "no-param-reassign": ["warn", { "props": false }],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-undef": ["warn"],
     "quotes": ["warn", "single", {"allowTemplateLiterals": true}]
   }
 }

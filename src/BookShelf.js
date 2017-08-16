@@ -1,14 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-
-export type Shelf = 'Reading' | 'Read' | 'Want' | 'None';
-export type Book = {
-  title: string,
-  authors: [string],
-  image: string,
-  id: string,
-  shelf: Shelf
-};
+import type { Book, Shelf } from './flowtypes';
 
 export const parseShelf = (s: string): Shelf => {
   switch (s) {
@@ -49,15 +41,16 @@ const shelfName = (name: Shelf): string => {
       return '';
   }
 };
+
 class BookShelf extends Component {
   props: {
-    books: Array<Book>,
+    bookList: Array<Book>,
     list: Shelf,
     onMarkBook: (Event, Book) => void
   };
 
   render() {
-    const { books, list } = this.props;
+    const { bookList, list } = this.props;
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">
@@ -65,7 +58,7 @@ class BookShelf extends Component {
         </h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
-            {books.map(book =>
+            {bookList.map(book =>
               <li key={book.id} className="book-list-item">
                 <div className="book">
                   <div className="book-top">

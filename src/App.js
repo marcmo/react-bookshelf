@@ -1,23 +1,25 @@
 // @flow
 import React from 'react';
 import { Route } from 'react-router-dom';
+import { Map } from 'immutable';
 import ListBooks from './ListBooks';
 import SearchBooks from './SearchBooks';
 import { parseShelf, serializeShelf } from './BookShelf';
-import type { Book } from './BookShelf';
+import type { Book, BookMap } from './flowtypes';
 import './App.css';
-import { getAll, update } from './BooksAPI';
+import { getAllAsMap, update } from './BooksAPI';
+
+type State = {
+  books: BookMap
+};
 
 class BooksApp extends React.Component {
-  state: {
-    books: Array<Book>
-  } = {
-    books: []
+  state: State = {
+    books: new Map()
   };
 
   componentDidMount() {
-    getAll().then(books => {
-      console.log(books);
+    getAllAsMap().then((books: BookMap) => {
       this.setState({ books });
     });
   }
@@ -29,8 +31,8 @@ class BooksApp extends React.Component {
     b.shelf = parseShelf(event.currentTarget.value);
     event.currentTarget.defaultValue = b.shelf;
     update(b, serializeShelf(b.shelf)).then(_ => {
-      this.setState(state => ({
-        books: state.books.filter(_b => _b.id !== b.id).concat([b])
+      this.setState((state: State): State => ({
+        books: state.books.set(b.id, b)
       }));
     });
   };
@@ -42,7 +44,11 @@ class BooksApp extends React.Component {
           <Route
             exact
             path="/search"
-            render={() => <SearchBooks onMarkBook={this.assignBook} />}
+            render={() =>
+              <SearchBooks
+                books={this.state.books}
+                onMarkBook={this.assignBook}
+              />}
           />
           <Route
             path="/"

@@ -1,30 +1,34 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import type { Book } from './BookShelf';
+import type { Book, BookMap } from './flowtypes';
 import { serializeShelf } from './BookShelf';
 import { searchOnline } from './BooksAPI';
 
+type State = {
+  query: string,
+  results: Array<Book>
+};
+
 class SearchBooks extends Component {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      query: '',
-      results: []
-    };
-  }
-  state: {
-    query: string,
-    results: Array<Book>
+  state: State = {
+    query: '',
+    results: []
   };
+
   props: {
+    books: BookMap,
     onMarkBook: (Event, Book) => void
   };
 
+  updateStatus = (book: Book): Book => this.props.books.get(book.id) || book;
+
   updateQuery = (query: string) => {
     searchOnline(query.trim()).then(res => {
-      console.log(res);
-      this.setState({ query: query.trim(), results: res.filter(b => b) });
+      this.setState({
+        query: query.trim(),
+        results: res.filter(b => b).map(this.updateStatus)
+      });
     });
   };
   handleKeyDown = (e: any): void => {
@@ -52,7 +56,7 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.results.map(book =>
+            {this.state.results.map((book: Book) =>
               <li key={book.id} className="book-list-item">
                 <div className="book">
                   <div className="book-top">

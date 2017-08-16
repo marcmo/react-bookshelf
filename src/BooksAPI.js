@@ -1,5 +1,6 @@
 // @flow
-import type { Book } from './BookShelf';
+import { Map } from 'immutable';
+import type { Book, BookMap } from './flowtypes';
 import { parseShelf } from './BookShelf';
 
 const api = 'https://reactnd-books-api.udacity.com';
@@ -49,6 +50,8 @@ export const getAll = (): Promise<Array<Book>> =>
     .then(
       data => (data.books.error ? new Array(0) : data.books.map(b => toBook(b)))
     );
+export const getAllAsMap = (): Promise<BookMap> =>
+  getAll().then(res => res.reduce((acc, x) => acc.set(x.id, x), new Map()));
 
 export const update = (book: Book, shelf: string): Promise<JSON> =>
   fetch(`${api}/books/${book.id}`, {

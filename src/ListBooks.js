@@ -1,32 +1,27 @@
 // @flow
 import React, { Component } from 'react';
-import escapeStringRegexp from 'escape-string-regexp';
-import sortBy from 'sort-by';
 import { Link } from 'react-router-dom';
+// import { Map } from 'immutable';
 import BookShelf from './BookShelf';
-import type { Book, Shelf } from './BookShelf';
+import type { Book, Shelf, BookMap } from './flowtypes';
 
 class ListBooks extends Component {
-  state = {
-    query: ''
+  filterByShelf = (s: Shelf): Array<Book> => {
+    console.log("filterByShelf");
+    console.log(this.props.books);
+    // const res = this.props.books.toArray().filter(
+    const res = Array.from(this.props.books.values()).filter(
+      (b: Book) => b.shelf === s
+    );
+    return res;
   };
+
   props: {
-    books: Array<Book>,
+    books: BookMap,
     onMarkBook: (Event, Book) => void
   };
 
   render() {
-    const { books } = this.props;
-    const { query } = this.state;
-    let filteredBooks: Array<Book>;
-    if (query) {
-      const escaped = escapeStringRegexp(query);
-      const m = new RegExp(escaped, 'i');
-      filteredBooks = books.filter(c => m.test(c.title));
-    } else {
-      filteredBooks = books;
-    }
-    filteredBooks.sort(sortBy('name'));
     return (
       <div className="list-books">
         <div className="row bg-dark">
@@ -43,17 +38,17 @@ class ListBooks extends Component {
         <div className="list-books-content">
           <div>
             <BookShelf
-              books={filteredBooks.filter(b => b.shelf === ('Reading': Shelf))}
+              bookList={this.filterByShelf('Reading')}
               list="Reading"
               onMarkBook={this.props.onMarkBook}
             />
             <BookShelf
-              books={filteredBooks.filter(b => b.shelf === ('Want': Shelf))}
+              bookList={this.filterByShelf('Want')}
               list="Want"
               onMarkBook={this.props.onMarkBook}
             />
             <BookShelf
-              books={filteredBooks.filter(b => b.shelf === ('Read': Shelf))}
+              bookList={this.filterByShelf('Read')}
               list="Read"
               onMarkBook={this.props.onMarkBook}
             />
