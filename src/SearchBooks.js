@@ -1,19 +1,34 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Map } from 'immutable';
 import type { Book, BookMap } from './flowtypes';
 import { serializeShelf } from './BookShelf';
 import { searchOnline } from './BooksAPI';
 
 type State = {
   query: string,
-  results: Array<Book>
+  results: Array<Book>,
+  searchActive: boolean
+};
+type DefaultProps = {
+  books: BookMap,
+  onMarkBook: (Event, Book) => void
+};
+type Props = {
+  books: BookMap,
+  onMarkBook: (Event, Book) => void
 };
 
-class SearchBooks extends Component {
+class SearchBooks extends Component<DefaultProps, Props, State> {
+  static defaultProps = {
+    books: new Map(),
+    onMarkBook: () => {}
+  };
   state: State = {
     query: '',
-    results: []
+    results: [],
+    searchActive: false
   };
 
   props: {
@@ -26,15 +41,24 @@ class SearchBooks extends Component {
   updateQuery = (query: string) => {
     const trimmed: string = query.trim();
     if (trimmed.length === 0) {
+      this.setState(
+        ({
+          query: trimmed,
+          results: [],
+          searchActive: false
+        }: State)
+      );
+    } else {
       this.setState({
         query: trimmed,
-        results: []
+        results: [],
+        searchActive: true
       });
-    } else {
       searchOnline(trimmed).then(res => {
         this.setState({
           query: trimmed,
-          results: res.filter(b => b).map(this.updateStatus)
+          results: res.filter(b => b).map(this.updateStatus),
+          searchActive: false
         });
       });
     }
@@ -59,6 +83,11 @@ class SearchBooks extends Component {
               onChange={event => this.updateQuery(event.target.value)}
               onKeyDown={this.handleKeyDown}
             />
+          </div>
+          <div>
+            <span className="badge badge-pill badge-primary">
+              {this.state.searchActive ? 'searching' : ''}
+            </span>
           </div>
         </div>
         <div className="search-books-results">
