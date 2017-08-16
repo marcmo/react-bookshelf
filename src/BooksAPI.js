@@ -27,7 +27,6 @@ const toBook = (b: any): ?Book => {
     !b.imageLinks ||
     !b.imageLinks.thumbnail
   ) {
-    console.log(`could not parse book ${b}`);
     return null;
   }
   return {
