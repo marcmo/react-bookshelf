@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Map } from 'immutable';
+import BooksGrid from './BooksGrid';
 import type { Book, BookMap } from './flowtypes';
-import { serializeShelf } from './BookShelf';
 import { searchOnline } from './BooksAPI';
 
 type State = {
@@ -91,45 +91,10 @@ class SearchBooks extends Component<DefaultProps, Props, State> {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
-            {this.state.results.map((book: Book) =>
-              <li key={book.id} className="book-list-item">
-                <div className="book">
-                  <div className="book-top">
-                    <div
-                      className="book-cover"
-                      style={{
-                        width: 128,
-                        height: 193,
-                        backgroundImage: `url(${book.image})`
-                      }}
-                    />
-                    <div className="book-shelf-changer">
-                      <select
-                        value={serializeShelf(book.shelf)}
-                        onChange={event => this.props.onMarkBook(event, book)}
-                      >
-                        <option value="none" disabled>
-                          Move to...
-                        </option>
-                        <option value="currentlyReading">
-                          Currently Reading
-                        </option>
-                        <option value="wantToRead">Want to Read</option>
-                        <option value="read">Read</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="book-title">
-                    {book.title}
-                  </div>
-                  <div className="book-authors">
-                    {book.authors}
-                  </div>
-                </div>
-              </li>
-            )}
-          </ol>
+          <BooksGrid
+            bookList={this.state.results}
+            onMarkBook={this.props.onMarkBook}
+          />
         </div>
       </div>
     );

@@ -1,20 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import { Map } from 'immutable';
 import BookShelf from './BookShelf';
 import type { Book, Shelf, BookMap } from './flowtypes';
 
 class ListBooks extends Component {
-  filterByShelf = (s: Shelf): Array<Book> => {
-    console.log('filterByShelf');
-    console.log(this.props.books);
-    // const res = this.props.books.toArray().filter(
-    const res = Array.from(this.props.books.values()).filter(
-      (b: Book) => b.shelf === s
-    );
-    return res;
-  };
+  filterByShelf = (s: Shelf): Array<Book> =>
+    Array.from(this.props.books.values()).filter((b: Book) => b.shelf === s);
 
   props: {
     books: BookMap,
