@@ -54,12 +54,10 @@ class BooksApp extends React.Component {
             exact
             path="/"
             render={() =>
-              <div className="list-books">
-                <ListBooks
-                  books={this.state.books}
-                  onMarkBook={this.assignBook}
-                />
-              </div>}
+              <ListBooks
+                books={this.state.books}
+                onMarkBook={this.assignBook}
+              />}
           />
         </div>
       </div>
