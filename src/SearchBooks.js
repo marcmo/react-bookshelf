@@ -39,31 +39,35 @@ class SearchBooks extends Component<DefaultProps, Props, State> {
 
   updateStatus = (book: Book): Book => this.props.books.get(book.id) || book;
 
-  updateQuery = debounce((query: string) => {
+  updateQueryNotDebounced = (query: string) => {
     const trimmed: string = query.trim();
-    if (trimmed.length === 0) {
-      this.setState(
-        ({
-          query: trimmed,
-          results: [],
-          searchActive: false
-        }: State)
-      );
-    } else {
-      this.setState({
-        query: trimmed,
-        results: [],
-        searchActive: true
-      });
+    this.setState({
+      query: trimmed,
+      results: [],
+      searchActive: trimmed.length > 0
+    });
+    if (trimmed.length > 0) {
       searchOnline(trimmed).then(res => {
-        this.setState({
-          query: trimmed,
-          results: res.filter(b => b).map(this.updateStatus),
+        this.setState((state: State) => ({
+          query: state.query,
+          results:
+            state.query.length > 0
+              ? res.filter(b => b).map(this.updateStatus)
+              : [],
           searchActive: false
-        });
+        }));
       });
     }
-  }, 100);
+  };
+  updateQueryDebounced = debounce(this.updateQueryNotDebounced, 150);
+  updateQuery = (query: string) => {
+    if (query.trim().length > 0) {
+      this.updateQueryDebounced(query);
+    } else {
+      this.updateQueryDebounced.cancel();
+      this.updateQueryNotDebounced('');
+    }
+  };
 
   handleKeyDown = (e: any): void => {
     if (e.keyCode === 27) {
@@ -71,6 +75,8 @@ class SearchBooks extends Component<DefaultProps, Props, State> {
       e.target.value = '';
     }
   };
+  loaderClass = () => (this.state.searchActive ? 'loadersmall' : '');
+
   render() {
     return (
       <div>
@@ -82,15 +88,11 @@ class SearchBooks extends Component<DefaultProps, Props, State> {
             <input
               type="text"
               placeholder="Search by title or author"
-              onChange={event => this.updateQuery(event.target.value)}
+              onChange={event => this.updateQueryDebounced(event.target.value)}
               onKeyDown={this.handleKeyDown}
             />
           </div>
-          <div>
-            <span className="badge badge-pill badge-primary">
-              {this.state.searchActive ? 'searching' : ''}
-            </span>
-          </div>
+          <div className={this.loaderClass()} />
         </div>
         <div className="search-books-results">
           <BooksGrid
