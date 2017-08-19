@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { Map } from 'immutable';
 import ListBooks from './ListBooks';
 import SearchBooks from './SearchBooks';
-import { parseShelf, serializeShelf } from './BookShelf';
+import { serializeShelf } from './BookShelf';
 import type { Book, BookMap } from './flowtypes';
 import './App.css';
 import { getAllAsMap, update } from './BooksAPI';
@@ -28,7 +28,7 @@ class BooksApp extends React.Component {
     event: Event & { currentTarget: window.HTMLInputElement },
     b: Book
   ): void => {
-    b.shelf = parseShelf(event.currentTarget.value);
+    b.shelf = event.currentTarget.value;
     event.currentTarget.defaultValue = b.shelf;
     update(b, serializeShelf(b.shelf)).then(_ => {
       this.setState((state: State): State => ({

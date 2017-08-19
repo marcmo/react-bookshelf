@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import BooksGrid from './BooksGrid';
 import type { Book, Shelf } from './flowtypes';
 
@@ -30,7 +30,7 @@ export const serializeShelf = (s: Shelf): string => {
   }
 };
 
-const shelfName = (name: Shelf): string => {
+export const shelfName = (name: Shelf): string => {
   switch (name) {
     case 'Reading':
       return 'Currently Reading';
@@ -43,29 +43,25 @@ const shelfName = (name: Shelf): string => {
   }
 };
 
-class BookShelf extends Component {
-  props: {
-    bookList: Array<Book>,
-    list: Shelf,
-    onMarkBook: (Event, Book) => void
-  };
+type Props = {
+  bookList: Array<Book>,
+  list: Shelf,
+  onMarkBook: (Event, Book) => void
+};
 
-  render() {
-    const { list } = this.props;
-    return (
-      <div className="bookshelf">
-        <h2 className="bookshelf-title">
-          {shelfName(list)}
-        </h2>
-        <div className="bookshelf-books">
-          <BooksGrid
-            bookList={this.props.bookList}
-            onMarkBook={this.props.onMarkBook}
-          />
-        </div>
+const BookShelf = (props: Props) => {
+  const { bookList, list, onMarkBook } = props;
+
+  return (
+    <div className="bookshelf">
+      <h2 className="bookshelf-title">
+        {shelfName(list)}
+      </h2>
+      <div className="bookshelf-books">
+        <BooksGrid bookList={bookList} onMarkBook={onMarkBook} />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default BookShelf;
