@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Map } from 'immutable';
+import debounce from 'lodash.debounce';
 import BooksGrid from './BooksGrid';
 import type { Book, BookMap } from './flowtypes';
 import { searchOnline } from './BooksAPI';
@@ -38,7 +39,7 @@ class SearchBooks extends Component<DefaultProps, Props, State> {
 
   updateStatus = (book: Book): Book => this.props.books.get(book.id) || book;
 
-  updateQuery = (query: string) => {
+  updateQuery = debounce((query: string) => {
     const trimmed: string = query.trim();
     if (trimmed.length === 0) {
       this.setState(
@@ -62,7 +63,8 @@ class SearchBooks extends Component<DefaultProps, Props, State> {
         });
       });
     }
-  };
+  }, 100);
+
   handleKeyDown = (e: any): void => {
     if (e.keyCode === 27) {
       this.setState({ query: '' });
